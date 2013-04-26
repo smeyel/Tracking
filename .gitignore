@@ -15,3 +15,5 @@ Release/
 *.txt
 *.csv
 *~
+*.a
+*.o
