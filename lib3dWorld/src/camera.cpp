@@ -20,10 +20,10 @@ void Camera::setCameraMatrix(Mat camMtx)
 
 	cameraMatrix = camMtx;
 	// Extract camera parameters for faster access
-	fx = camMtx.at<double>(0,0);
-	fy = camMtx.at<double>(1,1);
-	cx = camMtx.at<double>(0,2);
-	cy = camMtx.at<double>(1,2);
+	fx = camMtx.at<float>(0,0);
+	fy = camMtx.at<float>(1,1);
+	cx = camMtx.at<float>(0,2);
+	cy = camMtx.at<float>(1,2);
 }
 
 void Camera::setDistortionCoeffs(Mat distortCoeffMtx)
@@ -39,16 +39,16 @@ void Camera::setDistortionCoeffs(Mat distortCoeffMtx)
 Ray Camera::pointImg2Cam(Point2f pImg)
 {
 	// Orientation vector in the cameras own coordinate system
-	double vx = pImg.x - cx;
-	double vy = pImg.y - cy;
-	double vz = fx;	// Warning! Aspect ratio is assumed to be 1 !!!
+	float vx = pImg.x - cx;
+	float vy = pImg.y - cy;
+	float vz = fx;	// Warning! Aspect ratio is assumed to be 1 !!!
 
 	// Create ray
 	Ray ray;
 	ray.originalCameraID = cameraID;
 	ray.originalImageLocation = pImg;
-	ray.A = Matx41f(0,0,0,1);
-	ray.B = Matx41f(vx,vy,vz,1);
+	ray.A = Matx41f(0.0F,0.0F,0.0F,1.0F);
+	ray.B = Matx41f(vx,vy,vz,1.0F);
 	ray.cameraID = cameraID;
 
 	return ray;
@@ -58,9 +58,9 @@ Ray Camera::pointImg2Cam(Point2f pImg)
 Point2f Camera::pointCam2Img(Matx41f pCam)
 {
 	// Get 3D coordinates (from homogeneous coordinates)
-	double x = pCam.val[0] / pCam.val[3];
-	double y = pCam.val[1] / pCam.val[3];
-	double z = pCam.val[2] / pCam.val[3];
+	float x = pCam.val[0] / pCam.val[3];
+	float y = pCam.val[1] / pCam.val[3];
+	float z = pCam.val[2] / pCam.val[3];
 
 	OPENCV_ASSERT(z != 0,"Camera.pointCam2Img","z==0, unable to perform perspectivic projection");
 
@@ -188,10 +188,10 @@ bool Camera::calculateExtrinsicParams(vector<Point3f> objectPoints, vector<Point
 		// Create this->T from rvec and tvec
 		Rodrigues(rvec, rotMtx);
 		Matx44f T_inv = Matx44f(
-			rotMtx.at<double>(0,0), rotMtx.at<double>(0,1), rotMtx.at<double>(0,2), tvec.at<double>(0,0),
-			rotMtx.at<double>(1,0), rotMtx.at<double>(1,1), rotMtx.at<double>(1,2), tvec.at<double>(1,0),
-			rotMtx.at<double>(2,0), rotMtx.at<double>(2,1), rotMtx.at<double>(2,2), tvec.at<double>(2,0),
-			0.0, 0.0, 0.0, 1.0
+			rotMtx.at<float>(0,0), rotMtx.at<float>(0,1), rotMtx.at<float>(0,2), tvec.at<float>(0,0),
+			rotMtx.at<float>(1,0), rotMtx.at<float>(1,1), rotMtx.at<float>(1,2), tvec.at<float>(1,0),
+			rotMtx.at<float>(2,0), rotMtx.at<float>(2,1), rotMtx.at<float>(2,2), tvec.at<float>(2,0),
+			0.0F, 0.0F, 0.0F, 1.0F
 			);
 		T = T_inv.inv();
 		isTSet=true;
