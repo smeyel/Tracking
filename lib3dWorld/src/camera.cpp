@@ -1,5 +1,5 @@
-#include <opencv2\core\core.hpp>
-#include <opencv2\core\mat.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/core/mat.hpp>
 #include <opencv2/highgui/highgui.hpp>	// for OPENCV_ASSERT
 #include <opencv2/calib3d/calib3d.hpp>	// for solvePnP
 #include <opencv2/imgproc/imgproc.hpp>	// for undistort
