@@ -31,4 +31,6 @@ public:
 	void show(char *msg);
 };
 
+std::ostream& operator<< (std::ostream& stream, const Ray& ray);
+
 #endif

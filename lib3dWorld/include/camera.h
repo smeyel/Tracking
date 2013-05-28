@@ -24,7 +24,7 @@ class Camera
 	/** Camera lense distortion parameters */
 	Mat distortionCoeffs;
 	/** Camera parameters extracted from cameraMatrix for faster access. */
-	double cx, cy, fx, fy;
+	float cx, cy, fx, fy;
 	/** Indicates wether calibration data is set. */
 	bool isCalibrated;
 
