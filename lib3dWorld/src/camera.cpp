@@ -20,10 +20,10 @@ void Camera::setCameraMatrix(Mat camMtx)
 
 	cameraMatrix = camMtx;
 	// Extract camera parameters for faster access
-	fx = camMtx.at<double>(0,0);
-	fy = camMtx.at<double>(1,1);
-	cx = camMtx.at<double>(0,2);
-	cy = camMtx.at<double>(1,2);
+	fx = (float)camMtx.at<double>(0,0);
+	fy = (float)camMtx.at<double>(1,1);
+	cx = (float)camMtx.at<double>(0,2);
+	cy = (float)camMtx.at<double>(1,2);
 }
 
 void Camera::setDistortionCoeffs(Mat distortCoeffMtx)
@@ -188,9 +188,9 @@ bool Camera::calculateExtrinsicParams(vector<Point3f> objectPoints, vector<Point
 		// Create this->T from rvec and tvec
 		Rodrigues(rvec, rotMtx);
 		Matx44f T_inv = Matx44f(
-			rotMtx.at<double>(0,0), rotMtx.at<double>(0,1), rotMtx.at<double>(0,2), tvec.at<double>(0,0),
-			rotMtx.at<double>(1,0), rotMtx.at<double>(1,1), rotMtx.at<double>(1,2), tvec.at<double>(1,0),
-			rotMtx.at<double>(2,0), rotMtx.at<double>(2,1), rotMtx.at<double>(2,2), tvec.at<double>(2,0),
+			(float)rotMtx.at<double>(0,0), (float)rotMtx.at<double>(0,1), (float)rotMtx.at<double>(0,2), (float)tvec.at<double>(0,0),
+			(float)rotMtx.at<double>(1,0), (float)rotMtx.at<double>(1,1), (float)rotMtx.at<double>(1,2), (float)tvec.at<double>(1,0),
+			(float)rotMtx.at<double>(2,0), (float)rotMtx.at<double>(2,1), (float)rotMtx.at<double>(2,2), (float)tvec.at<double>(2,0),
 			0.0F, 0.0F, 0.0F, 1.0F
 			);
 		T = T_inv.inv();
