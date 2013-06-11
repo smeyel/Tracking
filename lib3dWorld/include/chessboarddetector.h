@@ -24,7 +24,7 @@ public:
 	Chessboard chessboard;
 
 	/** Constructor */
-	ChessboardDetector(cv::Size iBoardSize, int iSquareSize);
+	ChessboardDetector(cv::Size iBoardSize, float iSquareSize);
 	/** Constructor */
 	ChessboardDetector(Chessboard& iChessboard);
 

@@ -8,7 +8,7 @@
 using namespace cv;
 using namespace std;
 
-ChessboardDetector::ChessboardDetector(Size iBoardSize, int iSquareSize)
+ChessboardDetector::ChessboardDetector(Size iBoardSize, float iSquareSize)
 {
 	found = false;
 	chessboard = Chessboard(iBoardSize,iSquareSize);
