@@ -1,5 +1,6 @@
 #ifndef __RAY2D_H_
 #define __RAY2D_H_
+#define NOMINMAX
 #include <opencv2/core/core.hpp>
 
 using namespace cv;

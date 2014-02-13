@@ -1,6 +1,7 @@
 #ifndef __CHESSBOARD_H
 #define __CHESSBOARD_H
 
+#define NOMINMAX
 #include <opencv2/core/core.hpp>
 
 /** Represents a physical chessboard with given number of rows and columns and sizes in mm.

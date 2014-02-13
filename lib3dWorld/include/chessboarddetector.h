@@ -1,8 +1,8 @@
 #ifndef __CHESSBOARDDETECTOR_H
 #define __CHESSBOARDDETECTOR_H
+#define NOMINMAX
 #include <opencv2/core/core.hpp>
 #include "chessboard.h"
-
 
 /** Detects a Chessboard on a given image. It creates a Chessboard instance and looks for it
 	in a given image. If found, chessboard corners are stored in the pointBuf vector.
