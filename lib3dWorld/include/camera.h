@@ -52,6 +52,12 @@ public:
 	{
 		return T;
 	}
+	Matx33f GetCameraMatrix(){
+		return cameraMatrix;
+	}
+	Mat getDistortionCoeffs(){
+		return distortionCoeffs;
+	}
 	bool getIsTSet()
 	{
 		return isTSet;
