@@ -30,6 +30,9 @@ public:
 	Point2f originalImageLocation;
 
 	void show(char *msg);
+
+	/** @warning Not tested yet! TODO items in source code. */
+	static Matx41f getIntersection(Vector<Ray> rays, int firstRayIndex = 0);
 };
 
 std::ostream& operator<< (std::ostream& stream, const Ray& ray);
