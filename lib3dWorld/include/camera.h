@@ -40,6 +40,8 @@ public:
 	/** ID of the camera (the coordinate system) */
 	int cameraID;
 
+	Size cameraResolution;
+
 	/** Constructor. */
 	Camera();
 
@@ -96,7 +98,7 @@ public:
 	Ray pointImg2World(Point2f pImg);
 
 	/** Point world -> image (wrapper function) */
-	Point2f pointWorld2Img(Mat pWorld);
+	Point2f pointWorld2Img(Matx41f pWorld);
 
 	/** Load camera intrinsic parameters from XML
 		Use the camera_calibration sample to calibrate the camera.
@@ -140,6 +142,11 @@ public:
 
 	/** Uses the camera calibration data (distortion coefficients) to undistort an image. */
 	void undistortImage(Mat& src, Mat& dst);
+
+	void setCameraResolution(Size resolution);
+
+	void drawOrigin(Mat* src, int axisLength = 80);
+
 };
 
 #endif

@@ -147,7 +147,7 @@ Ray Camera::pointImg2World(Point2f pImg)
 }
 
 /** Point world -> image (wrapper function) */
-Point2f Camera::pointWorld2Img(Mat pWorld)
+Point2f Camera::pointWorld2Img(Matx41f pWorld)
 {
 	Matx41f pCam = pointWorld2Cam(pWorld);
 	Point2f pImg = pointCam2Img(pCam);
@@ -157,17 +157,32 @@ Point2f Camera::pointWorld2Img(Mat pWorld)
 bool Camera::loadCalibrationData(const char *filename)
 {
 	FileStorage fs(filename, FileStorage::READ);
-    if (!fs.isOpened())
-    {
+	if (!fs.isOpened())
+	{
 		OPENCV_ASSERT(false,"Camera.loadCalibrationData","Cannot load calibration data!");
-        return false;
-    }
-    Mat camMat = Mat::eye(3, 3, CV_64F);
-    Mat dCoeffs = Mat::zeros(8, 1, CV_64F);
-    fs["Camera_Matrix"] >> camMat;
+		return false;
+	}
+
+	Mat camMat = Mat::eye(3, 3, CV_64F);
+	Mat dCoeffs = Mat::zeros(8, 1, CV_64F);
+	Size cameraResolution;
+
+	fs["Camera_Matrix"] >> camMat;
 	fs["Distortion_Coefficients"] >> dCoeffs;
+	FileNode fn = fs["Camera_Resolution"];
+	fn["Width"] >> cameraResolution.width;
+	fn["Height"] >> cameraResolution.height;
+
+	if(cameraResolution.width == 0 || cameraResolution.height == 0)
+	{
+		OPENCV_ASSERT(false,"Camera.loadCalibrationData","Camera resolution parameter not found.");
+		return false;
+	}
+	
 	setCameraMatrix(camMat);
 	setDistortionCoeffs(dCoeffs);
+	setCameraResolution(cameraResolution);
+	
 	fs.release(); 
 	isCalibrated=true;
 	return true;
@@ -213,4 +228,30 @@ void Camera::undistortImage(Mat& src, Mat& dst)
 {
 	OPENCV_ASSERT(isCalibrated,"Camera.undistortImage","Cannot undistort before camera calibration!");
 	undistort(src, dst, cameraMatrix, distortionCoeffs);
+}
+
+void Camera::setCameraResolution(Size resolution)
+{
+	cameraResolution = resolution;
+}
+
+void Camera::drawOrigin(Mat* src, int axisLength)
+{
+	OPENCV_ASSERT(isCalibrated,"Camera.drawOrigin","Cannot draw origin before camera calibration!");
+	
+	Matx44d axis = Matx44d(
+		axisLength, 0, 0, 1,
+		0, axisLength, 0, 1,
+		0, 0, axisLength, 1,
+		0, 0, 0, 1
+		);
+
+	Point x = pointWorld2Img(axis.row(0).t());
+	Point y = pointWorld2Img(axis.row(1).t());
+	Point z = pointWorld2Img(axis.row(2).t());
+	Point origin = pointWorld2Img(axis.row(3).t());
+
+	line(*src, origin, x, Scalar(255, 0, 0), 2);
+	line(*src, origin, y, Scalar(0, 255, 0), 2);
+	line(*src, origin, z, Scalar(0, 0, 255), 2);
 }
