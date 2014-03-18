@@ -251,6 +251,11 @@ void Camera::drawOrigin(Mat* src, int axisLength)
 	Point z = pointWorld2Img(axis.row(2).t());
 	Point origin = pointWorld2Img(axis.row(3).t());
 
+
+	putText(*src, "X", Point(x.x+10, x.y+10), 1, 1, Scalar(255, 0, 0));
+	putText(*src, "Y", Point(y.x+10, y.y+10), 1, 1, Scalar(0, 255, 0));
+	putText(*src, "Z", Point(z.x+10, z.y+10), 1, 1, Scalar(0, 0, 255));
+
 	line(*src, origin, x, Scalar(255, 0, 0), 2);
 	line(*src, origin, y, Scalar(0, 255, 0), 2);
 	line(*src, origin, z, Scalar(0, 0, 255), 2);
