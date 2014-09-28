@@ -125,6 +125,14 @@ public:
 	*/
 	bool loadCalibrationData(const char *filename);
 
+  /** Save Extrinsic parameters (T matrix) to file  
+  */
+  bool saveExtrinsicParams(const char* filename);
+
+  /** Load Extrinsic parameters (T matrix) from file
+  */
+  bool loadExtrinsicParams(const char* filename);
+
 	/** Find extrinsic camera parameters using 2D-3D correspondences.
 		TODO: later, potential previous extrinsic parameters can be used as an initial guess...
 	*/
