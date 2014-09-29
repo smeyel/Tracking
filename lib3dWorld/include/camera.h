@@ -54,6 +54,11 @@ public:
 	{
 		return T;
 	}
+
+  void SetT(Matx44f mat)
+  {
+    T = mat;
+  }
 	Matx33f GetCameraMatrix(){
 		return cameraMatrix;
 	}
@@ -124,6 +129,14 @@ public:
 		</opencv_storage>
 	*/
 	bool loadCalibrationData(const char *filename);
+
+  /** Save Extrinsic parameters (T matrix) to file  
+  */
+  bool saveExtrinsicParams(const char* filename);
+
+  /** Load Extrinsic parameters (T matrix) from file
+  */
+  bool loadExtrinsicParams(const char* filename);
 
 	/** Find extrinsic camera parameters using 2D-3D correspondences.
 		TODO: later, potential previous extrinsic parameters can be used as an initial guess...

@@ -188,6 +188,48 @@ bool Camera::loadCalibrationData(const char *filename)
 	return true;
 }
 
+
+bool Camera::saveExtrinsicParams(const char* filename)
+{
+  FileStorage fs(filename, FileStorage::WRITE);
+  if (!fs.isOpened())
+  {
+    OPENCV_ASSERT(false, "Camera.saveExtrinsicParams", "Cannot save extrinsic parameters!");
+    return false;
+  }
+
+  fs << "Extrinsic_Params" << ((Mat) T);
+  fs.release();
+  return true;
+}
+
+bool Camera::loadExtrinsicParams(const char* filename)
+{
+  FileStorage fs(filename, FileStorage::READ);
+  if (!fs.isOpened())
+  {
+    OPENCV_ASSERT(false, "Camera.saveExtrinsicParams", "Cannot load extrinsic parameters!");
+    return false;
+  }
+
+  Mat out = Mat::zeros(4, 4, CV_32F);
+  printf("ext1\n");
+  fs["Extrinsic_Params"] >> out;
+  printf("ext2\n");
+
+  T = Matx44f(
+    (float)out.at<float>(0, 0), (float)out.at<float>(0, 1), (float)out.at<float>(0, 2), (float)out.at<float>(0, 3),
+    (float)out.at<float>(1, 0), (float)out.at<float>(1, 1), (float)out.at<float>(1, 2), (float)out.at<float>(1, 3),
+    (float)out.at<float>(2, 0), (float)out.at<float>(2, 1), (float)out.at<float>(2, 2), (float)out.at<float>(2, 3),
+    (float)out.at<float>(3, 0), (float)out.at<float>(3, 1), (float)out.at<float>(3, 2), (float)out.at<float>(3, 3)
+    );
+  printf("ext3\n");
+  isTSet = true;
+  fs.release();
+  return true;
+}
+
+
 bool Camera::calculateExtrinsicParams(vector<Point3f> objectPoints, vector<Point2f> imagePoints)
 {
 	OPENCV_ASSERT(isCalibrated,"Camera.calculateExtrinsicParams","Cannot calculate extrinsic parameters before camera calibration!");
